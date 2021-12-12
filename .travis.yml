@@ -1,5 +1,6 @@
- 
 sudo: required
+language: generic
+
 services: 
   - docker
 
@@ -14,3 +15,11 @@ after_success:
   - docker build -t gbozsik/multi-nginx ./nginx
   - docker build -t gbozsik/multi-server ./server
   - docker build -t gbozsik/multi-worker ./worker
+
+# log in to the docker CLI
+- echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+# take images and push them to docker hub
+- docker push gbozsik/multi-client
+- docker push gbozsik/multi-nginx
+- docker push gbozsik/multi-server
+- docker push gbozsik/multi-worker
